@@ -29,7 +29,6 @@ public class CurrencyDAOImpl implements CurrencyDAO {
     @Override
     public Currency getCurrencyByCode(String code) throws SQLException {
         String sql = "SELECT * FROM Currencies WHERE Code = ?";
-        List<Currency> currencies = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, code);
@@ -41,16 +40,35 @@ public class CurrencyDAOImpl implements CurrencyDAO {
     }
 
     @Override
-    public void addNewCurrency(Currency currency) throws SQLException {
+    public Currency getCurrencyById(int id) throws SQLException {
+        String sql = "SELECT * FROM Currencies WHERE id = ?";
+        try (Connection con = dataSource.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return Converter.ConvertResulSetToCurrency(rs);
+            else return null;
+        }
+    }
+
+    @Override
+    public int addNewCurrency(Currency currency) throws SQLException {
         String sql = "INSERT INTO Currencies (id, Code, FullName, Sign) VALUES (NULL, ?, ?, ?)";
-        List<Currency> currencies = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, currency.getCode());
             ps.setString(2, currency.getName());
             ps.setString(3, currency.getSign());
+            try {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                return -1;
+            }
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            return rs.getInt(1);
         }
         //TODO Exception for Non-unique currency
-
     }
 }
