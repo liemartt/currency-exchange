@@ -5,13 +5,13 @@ import java.util.Objects;
 public class Currency {
     private int id;
     private String code;
-    private String fullName;
+    private String name;
     private String sign;
 
     public Currency(int id, String code, String fullName, String sign) {
         this.id = id;
         this.code = code;
-        this.fullName = fullName;
+        this.name = fullName;
         this.sign = sign;
     }
 
@@ -31,12 +31,12 @@ public class Currency {
         this.code = code;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSign() {
@@ -52,7 +52,7 @@ public class Currency {
         return "Currency{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
-                ", fullName='" + fullName + '\'' +
+                ", fullName='" + name + '\'' +
                 ", sign='" + sign + '\'' +
                 '}';
     }
@@ -62,11 +62,11 @@ public class Currency {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Currency currency = (Currency) o;
-        return id == currency.id && Objects.equals(code, currency.code) && Objects.equals(fullName, currency.fullName) && Objects.equals(sign, currency.sign);
+        return id == currency.id && Objects.equals(code, currency.code) && Objects.equals(name, currency.name) && Objects.equals(sign, currency.sign);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, fullName, sign);
+        return Objects.hash(id, code, name, sign);
     }
 }
