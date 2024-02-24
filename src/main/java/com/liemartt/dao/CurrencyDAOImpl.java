@@ -34,8 +34,9 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            return Converter.ConvertResulSetToCurrency(rs);
+            if (rs.next())
+                return Converter.ConvertResulSetToCurrency(rs);
+            else return null;
         }
     }
 
@@ -46,7 +47,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, currency.getCode());
-            ps.setString(2, currency.getFullName());
+            ps.setString(2, currency.getName());
             ps.setString(3, currency.getSign());
         }
         //TODO Exception for Non-unique currency
