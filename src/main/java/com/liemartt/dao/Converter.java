@@ -1,16 +1,23 @@
 package com.liemartt.dao;
 
 import com.liemartt.model.Currency;
+import com.liemartt.model.ExchangeRate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Converter {
     public static Currency ConvertResulSetToCurrency(ResultSet rs) throws SQLException {
-        Currency currency = new Currency(rs.getInt(1),
+        return new Currency(rs.getInt(1),
                 rs.getString(2),
                 rs.getString(3),
                 rs.getString(4));
-        return currency;
+    }
+
+    public static ExchangeRate ConvertResulSetToExchangeRate(ResultSet rs) throws SQLException {
+        return new ExchangeRate(rs.getInt(1),
+                rs.getInt(2),
+                rs.getInt(3),
+                rs.getBigDecimal(4));
     }
 }
