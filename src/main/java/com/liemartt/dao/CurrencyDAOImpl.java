@@ -1,6 +1,7 @@
 package com.liemartt.dao;
 
 import com.liemartt.model.Currency;
+import com.liemartt.utilities.Converter;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.Connection;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyDAOImpl implements CurrencyDAO {
-    private static SQLiteDataSource dataSource = DataSourceSql.dataSource;
+    private static final SQLiteDataSource dataSource = DataSourceSql.dataSource;
 
     public List<Currency> getAllCurrencies() throws SQLException {
         String sql = "SELECT * FROM Currencies";

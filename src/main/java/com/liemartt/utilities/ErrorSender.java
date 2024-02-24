@@ -1,4 +1,4 @@
-package com.liemartt.servlet;
+package com.liemartt.utilities;
 
 import com.google.gson.Gson;
 import com.liemartt.model.Message;

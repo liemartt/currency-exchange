@@ -1,5 +1,6 @@
-package com.liemartt.dao;
+package com.liemartt.utilities;
 
+import com.liemartt.dao.CurrencyDAOImpl;
 import com.liemartt.model.Currency;
 import com.liemartt.model.ExchangeRate;
 

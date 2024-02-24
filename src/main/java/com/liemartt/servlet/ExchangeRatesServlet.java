@@ -5,6 +5,8 @@ import com.liemartt.dao.CurrencyDAOImpl;
 import com.liemartt.dao.ExchangeRateDAO;
 import com.liemartt.dao.ExchangeRateDAOImpl;
 import com.liemartt.model.ExchangeRate;
+import com.liemartt.utilities.ErrorSender;
+import com.liemartt.utilities.Renderer;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -46,7 +48,6 @@ public class ExchangeRatesServlet extends HttpServlet {
             }
             if (exchangeRateDAO.getExchangeRate(baseCurrencyCode, targetCurrencyCode) != null) {
                 ErrorSender.send(resp, 409, "There is already an exchange rate with this currencies");
-                return;
             } else {
                 ExchangeRate addedExchangeRate = exchangeRateDAO.addNewExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
                 resp.setStatus(201);

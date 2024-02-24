@@ -1,7 +1,7 @@
 package com.liemartt.dao;
 
-import com.liemartt.model.Currency;
 import com.liemartt.model.ExchangeRate;
+import com.liemartt.utilities.Converter;
 import org.sqlite.SQLiteDataSource;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExchangeRateDAOImpl implements ExchangeRateDAO {
-    private static SQLiteDataSource dataSource = DataSourceSql.dataSource;
+    private static final SQLiteDataSource dataSource = DataSourceSql.dataSource;
 
     @Override
     public List<ExchangeRate> getAllExchangeRates() throws SQLException {
@@ -56,9 +56,6 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
             ps.setString(2, targetCurrencyCode);
             ps.setBigDecimal(3, rate);
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            rs.next();
-            int id = rs.getInt(1);
             return this.getExchangeRate(baseCurrencyCode, targetCurrencyCode);
         }
     }

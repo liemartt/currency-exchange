@@ -3,6 +3,8 @@ package com.liemartt.servlet;
 import com.liemartt.dao.ExchangeRateDAO;
 import com.liemartt.dao.ExchangeRateDAOImpl;
 import com.liemartt.model.ExchangeRate;
+import com.liemartt.utilities.ErrorSender;
+import com.liemartt.utilities.Renderer;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/exchangeRate/*")
@@ -20,7 +21,6 @@ public class ExchangeRateServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!req.getMethod().equals("PATCH")) {
             this.doGet(req, resp);
-            return;
         } else this.doPatch(req, resp);
     }
 
