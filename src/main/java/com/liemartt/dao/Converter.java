@@ -16,8 +16,8 @@ public class Converter {
 
     public static ExchangeRate ConvertResulSetToExchangeRate(ResultSet rs) throws SQLException {
         return new ExchangeRate(rs.getInt(1),
-                rs.getInt(2),
-                rs.getInt(3),
+                new CurrencyDAOImpl().getCurrencyById(rs.getInt(2)),
+                new CurrencyDAOImpl().getCurrencyById(rs.getInt(3)),
                 rs.getBigDecimal(4));
     }
 }

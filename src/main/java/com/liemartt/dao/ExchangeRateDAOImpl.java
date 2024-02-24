@@ -56,9 +56,10 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
             ps.setString(2, targetCurrencyCode);
             ps.setBigDecimal(3, rate);
             ps.executeUpdate();
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                return Converter.ConvertResulSetToExchangeRate(rs);
-            }
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            int id = rs.getInt(1);
+            return this.getExchangeRate(baseCurrencyCode, targetCurrencyCode);
         }
     }
 
