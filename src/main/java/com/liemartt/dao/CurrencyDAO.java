@@ -8,10 +8,8 @@ import java.util.List;
 public interface CurrencyDAO {
     List<Currency> getAllCurrencies() throws SQLException;
 
-    Currency getCurrency() throws SQLException;
+    Currency getCurrencyByCode(String code) throws SQLException;
 
     void addNewCurrency(Currency currency) throws SQLException;
-
-    void updateCurrency(Currency currency) throws SQLException;
 
 }

@@ -1,5 +1,7 @@
 package com.liemartt.model;
 
+import java.util.Objects;
+
 public class Currency {
     private int id;
     private String code;
@@ -53,5 +55,18 @@ public class Currency {
                 ", fullName='" + fullName + '\'' +
                 ", sign='" + sign + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Currency currency = (Currency) o;
+        return id == currency.id && Objects.equals(code, currency.code) && Objects.equals(fullName, currency.fullName) && Objects.equals(sign, currency.sign);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, fullName, sign);
     }
 }
