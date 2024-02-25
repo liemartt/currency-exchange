@@ -3,7 +3,6 @@ package com.liemartt.dao;
 import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.exceptions.NoExchangeRateException;
 import com.liemartt.exceptions.NonUniqueExchangeRateException;
-import com.liemartt.model.Currency;
 import com.liemartt.model.ExchangeRate;
 
 import java.math.BigDecimal;

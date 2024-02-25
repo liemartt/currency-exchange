@@ -23,7 +23,6 @@ import java.sql.SQLException;
 public class ExchangeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CurrencyDAO currencyDAO = new CurrencyDAOImpl();
         String baseCurrencyCode = req.getParameter("from");
         String targetCurrencyCode = req.getParameter("to");
         String amount = req.getParameter("amount");

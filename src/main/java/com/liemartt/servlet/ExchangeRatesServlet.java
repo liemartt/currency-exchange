@@ -39,7 +39,6 @@ public class ExchangeRatesServlet extends HttpServlet {
         String targetCurrencyCode = req.getParameter("targetCurrencyCode");
         String rate = req.getParameter("rate");
         ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOImpl();
-        CurrencyDAO currencyDAO = new CurrencyDAOImpl();
         if (baseCurrencyCode == null || targetCurrencyCode == null || rate == null) {
             ErrorSender.send(resp, 400, "empty field in form");
             return;

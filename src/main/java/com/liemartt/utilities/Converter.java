@@ -22,8 +22,7 @@ public class Converter {
                     new CurrencyDAOImpl().getCurrencyById(rs.getInt(2)),
                     new CurrencyDAOImpl().getCurrencyById(rs.getInt(3)),
                     rs.getBigDecimal(4));
-        } catch (NoCurrencyException e) {
-            e.printStackTrace();
+        } catch (NoCurrencyException ignored) {
             return null;
         }
     }

@@ -15,8 +15,8 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 
 public class ExchangeService {
-    private CurrencyDAO currencyDAO = new CurrencyDAOImpl();
-    private ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOImpl();
+    private final CurrencyDAO currencyDAO = new CurrencyDAOImpl();
+    private final ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOImpl();
 
     public ExchangeService() {
     }

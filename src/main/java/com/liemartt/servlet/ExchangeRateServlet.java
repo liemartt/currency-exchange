@@ -2,9 +2,7 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.ExchangeRateDAO;
 import com.liemartt.dao.ExchangeRateDAOImpl;
-import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.exceptions.NoExchangeRateException;
-import com.liemartt.exceptions.NonUniqueExchangeRateException;
 import com.liemartt.model.ExchangeRate;
 import com.liemartt.utilities.ErrorSender;
 import com.liemartt.utilities.Renderer;
