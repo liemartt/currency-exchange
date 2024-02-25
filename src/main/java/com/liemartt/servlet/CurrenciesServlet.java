@@ -2,6 +2,8 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.CurrencyDAO;
 import com.liemartt.dao.CurrencyDAOImpl;
+import com.liemartt.exceptions.NoCurrencyException;
+import com.liemartt.exceptions.NonUniqueCurrencyException;
 import com.liemartt.model.Currency;
 import com.liemartt.utilities.ErrorSender;
 import com.liemartt.utilities.Renderer;
@@ -37,18 +39,14 @@ public class CurrenciesServlet extends HttpServlet {
             ErrorSender.send(resp, 400, "empty field in form");
             return;
         }
-        Currency currencyToAdd = new Currency(0, code, name, sign);
         try {
-            int addedCurrencyId = currencyDAO.addNewCurrency(currencyToAdd);
-            if (addedCurrencyId == -1) {
-                ErrorSender.send(resp, 409, "There is already a currency with this code");
-                return;
-            }
-            Currency addedCurrency = currencyDAO.getCurrencyById(addedCurrencyId);
+            Currency addedCurrency = currencyDAO.addNewCurrency(new Currency(0, code, name, sign));
             resp.setStatus(201);
             Renderer.render(resp, addedCurrency);
-        } catch (SQLException e) {
+        } catch (SQLException | NoCurrencyException e) {
             ErrorSender.send(resp, 500, "");
+        } catch (NonUniqueCurrencyException e) {
+            ErrorSender.send(resp, 409, "There is already a currency with this code");
         }
     }
 }

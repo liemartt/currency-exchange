@@ -2,6 +2,9 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.ExchangeRateDAO;
 import com.liemartt.dao.ExchangeRateDAOImpl;
+import com.liemartt.exceptions.NoCurrencyException;
+import com.liemartt.exceptions.NoExchangeRateException;
+import com.liemartt.exceptions.NonUniqueExchangeRateException;
 import com.liemartt.model.ExchangeRate;
 import com.liemartt.utilities.ErrorSender;
 import com.liemartt.utilities.Renderer;
@@ -35,13 +38,11 @@ public class ExchangeRateServlet extends HttpServlet {
         String targetCurrencyCode = pathInfo.split("/")[1].substring(3, 6);
         try {
             ExchangeRate exchangeRate = new ExchangeRateDAOImpl().getExchangeRate(baseCurrencyCode, targetCurrencyCode);
-            if (exchangeRate == null) {
-                ErrorSender.send(resp, 404, "No such exchange rate");
-                return;
-            }
             Renderer.render(resp, exchangeRate);
         } catch (SQLException e) {
             ErrorSender.send(resp, 500, "");
+        } catch (NoExchangeRateException e) {
+            ErrorSender.send(resp, 404, "No such exchange rate");
         }
     }
 
@@ -60,15 +61,12 @@ public class ExchangeRateServlet extends HttpServlet {
         String baseCurrencyCode = pathInfo.split("/")[1].substring(0, 3);
         String targetCurrencyCode = pathInfo.split("/")[1].substring(3, 6);
         try {
-            ExchangeRate exchangeRate = exchangeRateDAO.getExchangeRate(baseCurrencyCode, targetCurrencyCode);
-            if (exchangeRate == null) {
-                ErrorSender.send(resp, 404, "No such Exchange rate");
-                return;
-            }
             ExchangeRate updatedExchangeRate = exchangeRateDAO.updateExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
             Renderer.render(resp, updatedExchangeRate);
         } catch (SQLException e) {
             ErrorSender.send(resp, 500, "");
+        } catch (NoExchangeRateException e) {
+            ErrorSender.send(resp, 404, "No such Exchange rate");
         }
     }
 }

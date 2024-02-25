@@ -1,6 +1,7 @@
 package com.liemartt.servlet;
 
 import com.liemartt.dao.CurrencyDAOImpl;
+import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.model.Currency;
 import com.liemartt.utilities.ErrorSender;
 import com.liemartt.utilities.Renderer;
@@ -25,11 +26,11 @@ public class CurrencyServlet extends HttpServlet {
         String currencyCode = pathInfo.split("/")[1];
         try {
             Currency currency = new CurrencyDAOImpl().getCurrencyByCode(currencyCode);
-            if (currency != null) Renderer.render(resp, currency);
-            else ErrorSender.send(resp, 404, "No such currency");
+            Renderer.render(resp, currency);
         } catch (SQLException e) {
             ErrorSender.send(resp, 500, "");
+        } catch (NoCurrencyException e) {
+            ErrorSender.send(resp, 404, "No such currency");
         }
-
     }
 }

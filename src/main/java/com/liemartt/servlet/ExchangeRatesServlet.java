@@ -4,6 +4,9 @@ import com.liemartt.dao.CurrencyDAO;
 import com.liemartt.dao.CurrencyDAOImpl;
 import com.liemartt.dao.ExchangeRateDAO;
 import com.liemartt.dao.ExchangeRateDAOImpl;
+import com.liemartt.exceptions.NoCurrencyException;
+import com.liemartt.exceptions.NoExchangeRateException;
+import com.liemartt.exceptions.NonUniqueExchangeRateException;
 import com.liemartt.model.ExchangeRate;
 import com.liemartt.utilities.ErrorSender;
 import com.liemartt.utilities.Renderer;
@@ -42,21 +45,15 @@ public class ExchangeRatesServlet extends HttpServlet {
             return;
         }
         try {
-            if (currencyDAO.getCurrencyByCode(baseCurrencyCode) == null || currencyDAO.getCurrencyByCode(targetCurrencyCode) == null) {
-                ErrorSender.send(resp, 404, "No such currencies");
-                return;
-            }
-            if (exchangeRateDAO.getExchangeRate(baseCurrencyCode, targetCurrencyCode) != null) {
-                ErrorSender.send(resp, 409, "There is already an exchange rate with this currencies");
-            } else {
-                ExchangeRate addedExchangeRate = exchangeRateDAO.addNewExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
-                resp.setStatus(201);
-                Renderer.render(resp, addedExchangeRate);
-            }
-        } catch (SQLException e) {
+            ExchangeRate addedExchangeRate = exchangeRateDAO.addNewExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
+            resp.setStatus(201);
+            Renderer.render(resp, addedExchangeRate);
+        } catch (SQLException | NoExchangeRateException e) {
             ErrorSender.send(resp, 500, "");
+        } catch (NoCurrencyException e) {
+            ErrorSender.send(resp, 404, "No such currencies");
+        } catch (NonUniqueExchangeRateException e) {
+            ErrorSender.send(resp, 409, "There is already an exchange rate with this currencies");
         }
-
-
     }
 }
