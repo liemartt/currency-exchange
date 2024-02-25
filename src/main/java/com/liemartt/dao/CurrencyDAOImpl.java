@@ -1,5 +1,7 @@
 package com.liemartt.dao;
 
+import com.liemartt.exceptions.NoCurrencyException;
+import com.liemartt.exceptions.NonUniqueCurrencyException;
 import com.liemartt.model.Currency;
 import com.liemartt.utilities.Converter;
 import org.sqlite.SQLiteDataSource;
@@ -28,48 +30,40 @@ public class CurrencyDAOImpl implements CurrencyDAO {
     }
 
     @Override
-    public Currency getCurrencyByCode(String code) throws SQLException {
+    public Currency getCurrencyByCode(String code) throws SQLException, NoCurrencyException {
         String sql = "SELECT * FROM Currencies WHERE Code = ?";
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
-            if (rs.next())
-                return Converter.ConvertResulSetToCurrency(rs);
-            else return null;
+            if (rs.next()) return Converter.ConvertResulSetToCurrency(rs);
+            else throw new NoCurrencyException();
         }
     }
 
     @Override
-    public Currency getCurrencyById(int id) throws SQLException {
+    public Currency getCurrencyById(int id) throws SQLException, NoCurrencyException {
         String sql = "SELECT * FROM Currencies WHERE id = ?";
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next())
-                return Converter.ConvertResulSetToCurrency(rs);
-            else return null;
+            if (rs.next()) return Converter.ConvertResulSetToCurrency(rs);
+            else throw new NoCurrencyException();
         }
     }
 
     @Override
-    public int addNewCurrency(Currency currency) throws SQLException {
+    public Currency addNewCurrency(Currency currency) throws SQLException, NonUniqueCurrencyException, NoCurrencyException {
         String sql = "INSERT INTO Currencies (id, Code, FullName, Sign) VALUES (NULL, ?, ?, ?)";
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, currency.getCode());
             ps.setString(2, currency.getName());
             ps.setString(3, currency.getSign());
-            try {
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                return -1;
-            }
-            ResultSet rs = ps.getGeneratedKeys();
-            rs.next();
-            return rs.getInt(1);
+            int countOfRows = ps.executeUpdate();
+            if (countOfRows == 0) throw new NonUniqueCurrencyException();
+            return getCurrencyById(ps.getGeneratedKeys().getInt(1));
         }
-        //TODO Exception for Non-unique currency
     }
 }
