@@ -1,6 +1,7 @@
 package com.liemartt.utilities;
 
 import com.liemartt.dao.CurrencyDAOImpl;
+import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.model.Currency;
 import com.liemartt.model.ExchangeRate;
 
@@ -16,9 +17,14 @@ public class Converter {
     }
 
     public static ExchangeRate ConvertResulSetToExchangeRate(ResultSet rs) throws SQLException {
-        return new ExchangeRate(rs.getInt(1),
-                new CurrencyDAOImpl().getCurrencyById(rs.getInt(2)),
-                new CurrencyDAOImpl().getCurrencyById(rs.getInt(3)),
-                rs.getBigDecimal(4));
+        try {
+            return new ExchangeRate(rs.getInt(1),
+                    new CurrencyDAOImpl().getCurrencyById(rs.getInt(2)),
+                    new CurrencyDAOImpl().getCurrencyById(rs.getInt(3)),
+                    rs.getBigDecimal(4));
+        } catch (NoCurrencyException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
