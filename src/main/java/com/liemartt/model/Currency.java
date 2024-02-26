@@ -15,6 +15,10 @@ public class Currency {
         this.sign = sign;
     }
 
+    public Currency() {
+
+    }
+
     public int getId() {
         return id;
     }
