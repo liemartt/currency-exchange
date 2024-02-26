@@ -41,6 +41,10 @@ public class CurrenciesServlet extends HttpServlet {
             ErrorSender.send(resp, 400, "empty field in form");
             return;
         }
+        if (!code.matches("^[A-Z]{3}$")) {
+            ErrorSender.send(resp, 404, "invalid currency");
+            return;
+        }
         try {
             Currency addedCurrency = currencyDAO.addNewCurrency(new Currency(0, code, name, sign));
             resp.setStatus(201);
