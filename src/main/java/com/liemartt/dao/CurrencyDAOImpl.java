@@ -63,7 +63,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
 
     @Override
     public Currency addNewCurrency(Currency currency) {
-        String sql = "INSERT INTO Currencies (id, Code, FullName, Sign) VALUES (NULL, ?, ?, ?)";
+        String sql = "INSERT INTO Currencies (Code, FullName, Sign) VALUES (?, ?, ?)";
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, currency.getCode());
@@ -71,7 +71,6 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             ps.setString(3, currency.getSign());
             int countOfRows = ps.executeUpdate();
             if (countOfRows == 0){
-                System.out.println("hello");
                 throw new NonUniqueCurrencyException();
             }
             return getCurrencyById(ps.getGeneratedKeys().getInt(1));
