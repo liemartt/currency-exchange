@@ -17,7 +17,7 @@ import java.util.List;
 public class CurrencyDAOImpl implements CurrencyDAO {
     private static final SQLiteDataSource dataSource = DataSourceSql.dataSource;
 
-    public List<Currency> getAllCurrencies()  {
+    public List<Currency> getAllCurrencies() {
         String sql = "SELECT * FROM Currencies";
         List<Currency> currencies = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
@@ -26,8 +26,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             while (rs.next()) {
                 currencies.add(Converter.convertResulSetToCurrency(rs));
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DBErrorException();
         }
         return currencies;
@@ -69,8 +68,9 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             ps.setString(1, currency.getCode());
             ps.setString(2, currency.getName());
             ps.setString(3, currency.getSign());
-            int countOfRows = ps.executeUpdate();
-            if (countOfRows == 0){
+            try {
+                ps.executeUpdate();
+            } catch (SQLException e) {
                 throw new NonUniqueCurrencyException();
             }
             currency.setId(ps.getGeneratedKeys().getInt(1));
