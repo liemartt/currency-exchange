@@ -57,8 +57,8 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
 
     @Override
     public ExchangeRate addNewExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate){
-        String sql = "INSERT INTO ExchangeRates (id, BaseCurrencyId, TargetCurrencyId, Rate) " +
-                "VALUES (NULL, (select id from Currencies where Code = ?), (select id from Currencies where Code = ?), ?)";
+        String sql = "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) " +
+                "VALUES ((select id from Currencies where Code = ?), (select id from Currencies where Code = ?), ?)";
         if (currencyDAO.getCurrencyByCode(baseCurrencyCode) == null || currencyDAO.getCurrencyByCode(targetCurrencyCode) == null)
             throw new NoCurrencyException();
         try (Connection con = dataSource.getConnection()) {
