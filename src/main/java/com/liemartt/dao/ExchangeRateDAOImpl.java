@@ -27,7 +27,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                exchangeRates.add(Converter.ConvertResulSetToExchangeRate(rs));
+                exchangeRates.add(Converter.convertResulSetToExchangeRate(rs));
             }
         }
         return exchangeRates;
@@ -45,7 +45,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
             ps.setString(2, targetCurrencyCode);
             ResultSet rs = ps.executeQuery();
             if (rs.next())
-                return Converter.ConvertResulSetToExchangeRate(rs);
+                return Converter.convertResulSetToExchangeRate(rs);
             else throw new NoExchangeRateException();
         }
     }

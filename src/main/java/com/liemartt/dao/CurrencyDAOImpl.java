@@ -23,7 +23,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                currencies.add(Converter.ConvertResulSetToCurrency(rs));
+                currencies.add(Converter.convertResulSetToCurrency(rs));
             }
         }
         return currencies;
@@ -36,7 +36,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return Converter.ConvertResulSetToCurrency(rs);
+            if (rs.next()) return Converter.convertResulSetToCurrency(rs);
             else throw new NoCurrencyException();
         }
     }
@@ -48,7 +48,7 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return Converter.ConvertResulSetToCurrency(rs);
+            if (rs.next()) return Converter.convertResulSetToCurrency(rs);
             else throw new NoCurrencyException();
         }
     }
@@ -62,7 +62,10 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             ps.setString(2, currency.getName());
             ps.setString(3, currency.getSign());
             int countOfRows = ps.executeUpdate();
-            if (countOfRows == 0) throw new NonUniqueCurrencyException();
+            if (countOfRows == 0){
+                System.out.println("hello");
+                throw new NonUniqueCurrencyException();
+            }
             return getCurrencyById(ps.getGeneratedKeys().getInt(1));
         }
     }
