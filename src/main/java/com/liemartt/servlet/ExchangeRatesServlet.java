@@ -8,6 +8,7 @@ import com.liemartt.exceptions.DBErrorException;
 import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.exceptions.NoExchangeRateException;
 import com.liemartt.exceptions.NonUniqueExchangeRateException;
+import com.liemartt.model.Currency;
 import com.liemartt.model.ExchangeRate;
 import com.liemartt.utilities.ErrorSender;
 import com.liemartt.utilities.Renderer;
@@ -46,7 +47,10 @@ public class ExchangeRatesServlet extends HttpServlet {
             return;
         }
         try {
-            ExchangeRate addedExchangeRate = exchangeRateDAO.addNewExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
+            ExchangeRate addedExchangeRate = exchangeRateDAO.addNewExchangeRate(new ExchangeRate(0,
+                    new Currency(0, baseCurrencyCode, "", ""),
+                    new Currency(0, targetCurrencyCode, "", ""),
+                    new BigDecimal(rate)));
             resp.setStatus(201);
             Renderer.render(resp, addedExchangeRate);
         } catch (DBErrorException | NoExchangeRateException e) {
