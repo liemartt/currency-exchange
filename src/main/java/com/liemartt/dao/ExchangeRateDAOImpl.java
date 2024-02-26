@@ -38,7 +38,9 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
 
     @Override
     public ExchangeRate getExchangeRate(String baseCurrencyCode, String targetCurrencyCode) {
-        String sql = "SELECT er.id, er.BaseCurrencyId, er.TargetCurrencyId, er.Rate from ExchangeRates er " +
+        String sql = "SELECT er.id, er.BaseCurrencyId, er.TargetCurrencyId, er.Rate, " +
+                "cr1.id, cr1.Code, cr1.FullName, " +
+                "cr1.Sign, cr2.id, cr2.Code, cr2.FullName, cr2.Sign from ExchangeRates er " +
                 "INNER JOIN Currencies cr1 on cr1.id = BaseCurrencyId " +
                 "INNER JOIN Currencies cr2 on cr2.id = TargetCurrencyId " +
                 "WHERE cr1.Code = ? and cr2.Code = ?";

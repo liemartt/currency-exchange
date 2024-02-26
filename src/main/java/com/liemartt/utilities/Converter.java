@@ -1,6 +1,7 @@
 package com.liemartt.utilities;
 
 import com.liemartt.dao.CurrencyDAOImpl;
+import com.liemartt.exceptions.DBErrorException;
 import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.model.Currency;
 import com.liemartt.model.ExchangeRate;
@@ -16,14 +17,22 @@ public class Converter {
                 rs.getString(4));
     }
 
-    public static ExchangeRate convertResulSetToExchangeRate(ResultSet rs) throws SQLException {
+    public static ExchangeRate convertResulSetToExchangeRate(ResultSet rs) {
+        Currency baseCurrency = new Currency();
         try {
-            return new ExchangeRate(rs.getInt(1),
-                    new CurrencyDAOImpl().getCurrencyById(rs.getInt(2)),
-                    new CurrencyDAOImpl().getCurrencyById(rs.getInt(3)),
-                    rs.getBigDecimal(4));
-        } catch (NoCurrencyException ignored) {
-            return null;
+            baseCurrency.setId(rs.getInt("cr1.id"));
+
+            baseCurrency.setCode(rs.getString("cr1.Code"));
+            baseCurrency.setName(rs.getString("cr1.FullName"));
+            baseCurrency.setSign(rs.getString("cr1.Sign"));
+            Currency targetCurrency = new Currency();
+            targetCurrency.setId(rs.getInt("cr2.id"));
+            targetCurrency.setCode(rs.getString("cr2.Code"));
+            targetCurrency.setName(rs.getString("cr2.FullName"));
+            targetCurrency.setSign(rs.getString("cr2.Sign"));
+            return new ExchangeRate(rs.getInt(1), baseCurrency, targetCurrency, rs.getBigDecimal(4));
+        } catch (SQLException e) {
+            throw new DBErrorException();
         }
     }
 }
