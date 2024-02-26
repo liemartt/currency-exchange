@@ -9,14 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Converter {
-    public static Currency ConvertResulSetToCurrency(ResultSet rs) throws SQLException {
+    public static Currency convertResulSetToCurrency(ResultSet rs) throws SQLException {
         return new Currency(rs.getInt(1),
                 rs.getString(2),
                 rs.getString(3),
                 rs.getString(4));
     }
 
-    public static ExchangeRate ConvertResulSetToExchangeRate(ResultSet rs) throws SQLException {
+    public static ExchangeRate convertResulSetToExchangeRate(ResultSet rs) throws SQLException {
         try {
             return new ExchangeRate(rs.getInt(1),
                     new CurrencyDAOImpl().getCurrencyById(rs.getInt(2)),
