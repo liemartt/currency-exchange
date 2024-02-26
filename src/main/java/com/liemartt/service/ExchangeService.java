@@ -32,15 +32,15 @@ public class ExchangeService {
         }
         try { // Case  B-A
             BigDecimal inverseExchangeRate = exchangeRateDAO.getExchangeRate(targetCurrency.getCode(), baseCurrency.getCode()).getRate();
-            BigDecimal exchangeRate = new BigDecimal(1).divide(inverseExchangeRate, 2, RoundingMode.CEILING);
-            return new ExchangeResponseDTO(baseCurrency, targetCurrency, exchangeRate, amount, amount.multiply(exchangeRate));
+            BigDecimal exchangeRate = new BigDecimal("1.000000").divide(inverseExchangeRate,  RoundingMode.CEILING);
+            return new ExchangeResponseDTO(baseCurrency, targetCurrency, exchangeRate, amount, amount.multiply(exchangeRate).setScale(2, RoundingMode.CEILING));
         } catch (NoExchangeRateException ignored) {
         }
         // Case  USD-A and USD-B
         BigDecimal exchangeRateUsdToBaseCurrency = exchangeRateDAO.getExchangeRate("USD", baseCurrency.getCode()).getRate();
         BigDecimal exchangeRateUsdToTargetCurrency = exchangeRateDAO.getExchangeRate("USD", targetCurrency.getCode()).getRate();
-        BigDecimal exchangeRateBaseCurrencyToUsd = new BigDecimal(1).divide(exchangeRateUsdToBaseCurrency, 2, RoundingMode.CEILING);
+        BigDecimal exchangeRateBaseCurrencyToUsd = new BigDecimal("1.000000").divide(exchangeRateUsdToBaseCurrency,  RoundingMode.CEILING);
         BigDecimal exchangeRate = exchangeRateBaseCurrencyToUsd.multiply(exchangeRateUsdToTargetCurrency);
-        return new ExchangeResponseDTO(baseCurrency, targetCurrency, exchangeRate, amount, amount.multiply(exchangeRate));
+        return new ExchangeResponseDTO(baseCurrency, targetCurrency, exchangeRate, amount, amount.multiply(exchangeRate).setScale(2, RoundingMode.CEILING));
     }
 }

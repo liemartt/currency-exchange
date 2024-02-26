@@ -10,7 +10,7 @@ public class DataSourceSql {
     public final static SQLiteDataSource dataSource;
 
     static {
-        String URL = "jdbc:sqlite:" + DataSourceSql.class.getClassLoader().getResource("currency-exchange-db.sqlite").getPath();
+        String URL = "jdbc:sqlite:D:/JavaLearning/currency-exchange/src/main/resources/currency-exchange-db.sqlite";
         dataSource = new SQLiteDataSource();
         dataSource.setUrl(URL);
     }
