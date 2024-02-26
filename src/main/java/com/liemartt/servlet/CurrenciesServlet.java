@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(urlPatterns = "/currencies")
 public class CurrenciesServlet extends HttpServlet {
@@ -35,7 +36,7 @@ public class CurrenciesServlet extends HttpServlet {
         String name = req.getParameter("name");
         String code = req.getParameter("code");
         String sign = req.getParameter("sign");
-        if (name == null || code == null || sign == null) {
+        if (Objects.equals(name, "") || Objects.equals(code, "") || Objects.equals(sign, "")) {
             ErrorSender.send(resp, 400, "empty field in form");
             return;
         }

@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Objects;
 
 @WebServlet(urlPatterns = "/exchange")
 public class ExchangeServlet extends HttpServlet {
@@ -26,7 +27,7 @@ public class ExchangeServlet extends HttpServlet {
         String baseCurrencyCode = req.getParameter("from");
         String targetCurrencyCode = req.getParameter("to");
         String amount = req.getParameter("amount");
-        if (baseCurrencyCode == null || targetCurrencyCode == null || amount == null) {
+        if (Objects.equals(baseCurrencyCode, "") || Objects.equals(targetCurrencyCode, "") || Objects.equals(amount, "")) {
             ErrorSender.send(resp, 400, "empty field in form");
             return;
         }

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(urlPatterns = "/exchangeRates")
 public class ExchangeRatesServlet extends HttpServlet {
@@ -39,7 +40,7 @@ public class ExchangeRatesServlet extends HttpServlet {
         String targetCurrencyCode = req.getParameter("targetCurrencyCode");
         String rate = req.getParameter("rate");
         ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOImpl();
-        if (baseCurrencyCode == null || targetCurrencyCode == null || rate == null) {
+        if (Objects.equals(baseCurrencyCode, "") || Objects.equals(targetCurrencyCode, "") || Objects.equals(rate, "")) {
             ErrorSender.send(resp, 400, "empty field in form");
             return;
         }

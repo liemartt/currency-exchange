@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Objects;
 
 @WebServlet(urlPatterns = "/exchangeRate/*")
 public class ExchangeRateServlet extends HttpServlet {
@@ -47,7 +48,7 @@ public class ExchangeRateServlet extends HttpServlet {
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOImpl();
         String rate = req.getParameter("rate");
-        if (rate == null) {
+        if (Objects.equals(rate, "")) {
             ErrorSender.send(resp, 400, "empty field in form");
             return;
         }
