@@ -56,7 +56,10 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
     }
 
     @Override
-    public ExchangeRate addNewExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate){
+    public ExchangeRate addNewExchangeRate(ExchangeRate exchangeRate) {
+        String baseCurrencyCode = exchangeRate.getBaseCurrency().getCode();
+        String targetCurrencyCode = exchangeRate.getTargetCurrency().getCode();
+        BigDecimal rate = exchangeRate.getRate();
         String sql = "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) " +
                 "VALUES ((select id from Currencies where Code = ?), (select id from Currencies where Code = ?), ?)";
         if (currencyDAO.getCurrencyByCode(baseCurrencyCode) == null || currencyDAO.getCurrencyByCode(targetCurrencyCode) == null)
@@ -66,8 +69,11 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
             ps.setString(1, baseCurrencyCode);
             ps.setString(2, targetCurrencyCode);
             ps.setBigDecimal(3, rate);
-            int countOfRows = ps.executeUpdate();
-            if (countOfRows == 0) throw new NonUniqueExchangeRateException();
+            try {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new NonUniqueExchangeRateException();
+            }
             return this.getExchangeRate(baseCurrencyCode, targetCurrencyCode);
         } catch (SQLException e) {
             throw new DBErrorException();
@@ -75,7 +81,7 @@ public class ExchangeRateDAOImpl implements ExchangeRateDAO {
     }
 
     @Override
-    public ExchangeRate updateExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate){
+    public ExchangeRate updateExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate) {
         String sql = "UPDATE ExchangeRates SET Rate = ? " +
                 "WHERE BaseCurrencyId =  (select id from Currencies where Code = ?) " +
                 "and TargetCurrencyId = (select id from Currencies where Code = ?)";

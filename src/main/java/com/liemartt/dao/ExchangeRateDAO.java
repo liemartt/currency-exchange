@@ -15,7 +15,7 @@ public interface ExchangeRateDAO {
 
     ExchangeRate getExchangeRate(String baseCurrencyCode, String targetCurrencyCode);
 
-    ExchangeRate addNewExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate);
+    ExchangeRate addNewExchangeRate(ExchangeRate exchangeRate);
 
     ExchangeRate updateExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate);
 
