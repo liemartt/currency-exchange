@@ -20,16 +20,15 @@ public class Converter {
     public static ExchangeRate convertResulSetToExchangeRate(ResultSet rs) {
         Currency baseCurrency = new Currency();
         try {
-            baseCurrency.setId(rs.getInt("cr1.id"));
-
-            baseCurrency.setCode(rs.getString("cr1.Code"));
-            baseCurrency.setName(rs.getString("cr1.FullName"));
-            baseCurrency.setSign(rs.getString("cr1.Sign"));
+            baseCurrency.setId(rs.getInt("cr1_id"));
+            baseCurrency.setCode(rs.getString("cr1_Code"));
+            baseCurrency.setName(rs.getString("cr1_FullName"));
+            baseCurrency.setSign(rs.getString("cr1_Sign"));
             Currency targetCurrency = new Currency();
-            targetCurrency.setId(rs.getInt("cr2.id"));
-            targetCurrency.setCode(rs.getString("cr2.Code"));
-            targetCurrency.setName(rs.getString("cr2.FullName"));
-            targetCurrency.setSign(rs.getString("cr2.Sign"));
+            targetCurrency.setId(rs.getInt("cr2_id"));
+            targetCurrency.setCode(rs.getString("cr2_Code"));
+            targetCurrency.setName(rs.getString("cr2_FullName"));
+            targetCurrency.setSign(rs.getString("cr2_Sign"));
             return new ExchangeRate(rs.getInt(1), baseCurrency, targetCurrency, rs.getBigDecimal(4));
         } catch (SQLException e) {
             throw new DBErrorException();
