@@ -73,7 +73,8 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             if (countOfRows == 0){
                 throw new NonUniqueCurrencyException();
             }
-            return getCurrencyById(ps.getGeneratedKeys().getInt(1));
+            currency.setId(ps.getGeneratedKeys().getInt(1));
+            return currency;
         } catch (SQLException e) {
             throw new DBErrorException();
         }
