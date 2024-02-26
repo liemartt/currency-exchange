@@ -1,5 +1,6 @@
 package com.liemartt.servlet;
 
+import com.google.gson.Gson;
 import com.liemartt.dao.ExchangeRateDAO;
 import com.liemartt.dao.ExchangeRateDAOImpl;
 import com.liemartt.exceptions.DBErrorException;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -48,8 +50,16 @@ public class ExchangeRateServlet extends HttpServlet {
 
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAOImpl();
-        String rate = req.getParameter("rate");
-        if (Objects.equals(rate, "")) {
+        StringBuilder requestBody = new StringBuilder();
+        String line;
+        try (BufferedReader reader = req.getReader()) {
+            while ((line = reader.readLine()) != null) {
+                requestBody.append(line);
+            }
+        }
+        String jsonRate = requestBody.toString();
+        String rate = jsonRate.split("=")[1];
+        if (Objects.equals(rate, " ")) {
             ErrorSender.send(resp, 400, "empty field in form");
             return;
         }
