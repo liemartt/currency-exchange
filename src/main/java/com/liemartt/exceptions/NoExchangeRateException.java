@@ -1,4 +1,4 @@
 package com.liemartt.exceptions;
 
-public class NoExchangeRateException extends Exception{
+public class NoExchangeRateException extends RuntimeException{
 }

@@ -2,6 +2,7 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.ExchangeRateDAO;
 import com.liemartt.dao.ExchangeRateDAOImpl;
+import com.liemartt.exceptions.DBErrorException;
 import com.liemartt.exceptions.NoExchangeRateException;
 import com.liemartt.model.ExchangeRate;
 import com.liemartt.utilities.ErrorSender;
@@ -38,7 +39,7 @@ public class ExchangeRateServlet extends HttpServlet {
         try {
             ExchangeRate exchangeRate = new ExchangeRateDAOImpl().getExchangeRate(baseCurrencyCode, targetCurrencyCode);
             Renderer.render(resp, exchangeRate);
-        } catch (SQLException e) {
+        } catch (DBErrorException e) {
             ErrorSender.send(resp, 500, "Server error");
         } catch (NoExchangeRateException e) {
             ErrorSender.send(resp, 404, "No such exchange rate");
@@ -62,7 +63,7 @@ public class ExchangeRateServlet extends HttpServlet {
         try {
             ExchangeRate updatedExchangeRate = exchangeRateDAO.updateExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
             Renderer.render(resp, updatedExchangeRate);
-        } catch (SQLException e) {
+        } catch (DBErrorException e) {
             ErrorSender.send(resp, 500, "");
         } catch (NoExchangeRateException e) {
             ErrorSender.send(resp, 404, "No such Exchange rate");

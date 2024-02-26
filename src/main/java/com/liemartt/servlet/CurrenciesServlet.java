@@ -2,6 +2,7 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.CurrencyDAO;
 import com.liemartt.dao.CurrencyDAOImpl;
+import com.liemartt.exceptions.DBErrorException;
 import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.exceptions.NonUniqueCurrencyException;
 import com.liemartt.model.Currency;
@@ -25,7 +26,7 @@ public class CurrenciesServlet extends HttpServlet {
         try {
             List<Currency> currencies = new CurrencyDAOImpl().getAllCurrencies();
             Renderer.render(resp, currencies);
-        } catch (SQLException e) {
+        } catch (DBErrorException e) {
             ErrorSender.send(resp, 500, "Server error");
         }
     }
@@ -44,7 +45,7 @@ public class CurrenciesServlet extends HttpServlet {
             Currency addedCurrency = currencyDAO.addNewCurrency(new Currency(0, code, name, sign));
             resp.setStatus(201);
             Renderer.render(resp, addedCurrency);
-        } catch (SQLException | NoCurrencyException e) {
+        } catch (DBErrorException | NoCurrencyException e) {
             ErrorSender.send(resp, 500, "Server error");
         } catch (NonUniqueCurrencyException e) {
             ErrorSender.send(resp, 409, "There is already a currency with this code");

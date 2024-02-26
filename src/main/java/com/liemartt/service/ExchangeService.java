@@ -21,7 +21,7 @@ public class ExchangeService {
     public ExchangeService() {
     }
 
-    public ExchangeResponseDTO exchange(ExchangeRequestDTO request) throws SQLException, NoCurrencyException, NoExchangeRateException {
+    public ExchangeResponseDTO exchange(ExchangeRequestDTO request){
         Currency baseCurrency = currencyDAO.getCurrencyByCode(request.getBaseCurrencyCode());
         Currency targetCurrency = currencyDAO.getCurrencyByCode(request.getTargetCurrencyCode());
         BigDecimal amount = request.getAmount();

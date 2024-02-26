@@ -2,6 +2,7 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.CurrencyDAO;
 import com.liemartt.dao.CurrencyDAOImpl;
+import com.liemartt.exceptions.DBErrorException;
 import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.exceptions.NoExchangeRateException;
 import com.liemartt.dto.ExchangeRequestDTO;
@@ -45,7 +46,7 @@ public class ExchangeServlet extends HttpServlet {
         try {
             ExchangeResponseDTO exchangeResponseDTO = new ExchangeService().exchange(exchangeRequestDTO);
             Renderer.render(resp, exchangeResponseDTO);
-        } catch (SQLException e) {
+        } catch (DBErrorException e) {
             ErrorSender.send(resp, 500, "Server error");
         } catch (NoCurrencyException e) {
             ErrorSender.send(resp, 404, "No such currencies");

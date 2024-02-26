@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface ExchangeRateDAO {
 
-    List<ExchangeRate> getAllExchangeRates() throws SQLException;
+    List<ExchangeRate> getAllExchangeRates();
 
-    ExchangeRate getExchangeRate(String baseCurrencyCode, String targetCurrencyCode) throws SQLException, NoExchangeRateException;
+    ExchangeRate getExchangeRate(String baseCurrencyCode, String targetCurrencyCode);
 
-    ExchangeRate addNewExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate) throws SQLException, NonUniqueExchangeRateException, NoExchangeRateException, NoCurrencyException;
+    ExchangeRate addNewExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate);
 
-    ExchangeRate updateExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate) throws SQLException, NoExchangeRateException;
+    ExchangeRate updateExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate);
 
 
 }

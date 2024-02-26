@@ -1,5 +1,6 @@
 package com.liemartt.dao;
 
+import com.liemartt.exceptions.DBErrorException;
 import com.liemartt.exceptions.NoCurrencyException;
 import com.liemartt.exceptions.NonUniqueCurrencyException;
 import com.liemartt.model.Currency;
@@ -16,7 +17,7 @@ import java.util.List;
 public class CurrencyDAOImpl implements CurrencyDAO {
     private static final SQLiteDataSource dataSource = DataSourceSql.dataSource;
 
-    public List<Currency> getAllCurrencies() throws SQLException {
+    public List<Currency> getAllCurrencies()  {
         String sql = "SELECT * FROM Currencies";
         List<Currency> currencies = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
@@ -26,11 +27,14 @@ public class CurrencyDAOImpl implements CurrencyDAO {
                 currencies.add(Converter.convertResulSetToCurrency(rs));
             }
         }
+        catch (SQLException e){
+            throw new DBErrorException();
+        }
         return currencies;
     }
 
     @Override
-    public Currency getCurrencyByCode(String code) throws SQLException, NoCurrencyException {
+    public Currency getCurrencyByCode(String code) {
         String sql = "SELECT * FROM Currencies WHERE Code = ?";
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -38,11 +42,13 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) return Converter.convertResulSetToCurrency(rs);
             else throw new NoCurrencyException();
+        } catch (SQLException e) {
+            throw new DBErrorException();
         }
     }
 
     @Override
-    public Currency getCurrencyById(int id) throws SQLException, NoCurrencyException {
+    public Currency getCurrencyById(int id) {
         String sql = "SELECT * FROM Currencies WHERE id = ?";
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -50,11 +56,13 @@ public class CurrencyDAOImpl implements CurrencyDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) return Converter.convertResulSetToCurrency(rs);
             else throw new NoCurrencyException();
+        } catch (SQLException e) {
+            throw new DBErrorException();
         }
     }
 
     @Override
-    public Currency addNewCurrency(Currency currency) throws SQLException, NonUniqueCurrencyException, NoCurrencyException {
+    public Currency addNewCurrency(Currency currency) {
         String sql = "INSERT INTO Currencies (id, Code, FullName, Sign) VALUES (NULL, ?, ?, ?)";
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -67,6 +75,8 @@ public class CurrencyDAOImpl implements CurrencyDAO {
                 throw new NonUniqueCurrencyException();
             }
             return getCurrencyById(ps.getGeneratedKeys().getInt(1));
+        } catch (SQLException e) {
+            throw new DBErrorException();
         }
     }
 }

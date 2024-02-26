@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CurrencyDAO {
-    List<Currency> getAllCurrencies() throws SQLException;
+    List<Currency> getAllCurrencies();
 
-    Currency getCurrencyByCode(String code) throws SQLException, NoCurrencyException;
+    Currency getCurrencyByCode(String code);
 
-    Currency getCurrencyById(int id) throws SQLException, NoCurrencyException;
+    Currency getCurrencyById(int id);
 
-    Currency addNewCurrency(Currency currency) throws SQLException, NonUniqueCurrencyException, NoCurrencyException;
+    Currency addNewCurrency(Currency currency);
 
 }

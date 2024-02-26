@@ -1,4 +1,4 @@
 package com.liemartt.exceptions;
 
-public class NoCurrencyException extends Exception{
+public class NoCurrencyException extends RuntimeException{
 }
