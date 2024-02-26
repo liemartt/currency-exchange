@@ -48,7 +48,7 @@ public class ExchangeRatesServlet extends HttpServlet {
             resp.setStatus(201);
             Renderer.render(resp, addedExchangeRate);
         } catch (SQLException | NoExchangeRateException e) {
-            ErrorSender.send(resp, 500, "");
+            ErrorSender.send(resp, 500, "Server error");
         } catch (NoCurrencyException e) {
             ErrorSender.send(resp, 404, "No such currencies");
         } catch (NonUniqueExchangeRateException e) {

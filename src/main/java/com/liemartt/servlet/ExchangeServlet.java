@@ -45,7 +45,7 @@ public class ExchangeServlet extends HttpServlet {
             ExchangeResponseDTO exchangeResponseDTO = new ExchangeService().exchange(exchangeRequestDTO);
             Renderer.render(resp, exchangeResponseDTO);
         } catch (SQLException e) {
-            ErrorSender.send(resp, 500, "");
+            ErrorSender.send(resp, 500, "Server error");
         } catch (NoCurrencyException e) {
             ErrorSender.send(resp, 404, "No such currencies");
         } catch (NoExchangeRateException e) {

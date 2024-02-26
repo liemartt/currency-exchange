@@ -28,7 +28,7 @@ public class CurrencyServlet extends HttpServlet {
             Currency currency = new CurrencyDAOImpl().getCurrencyByCode(currencyCode);
             Renderer.render(resp, currency);
         } catch (SQLException e) {
-            ErrorSender.send(resp, 500, "");
+            ErrorSender.send(resp, 500, "Server error");
         } catch (NoCurrencyException e) {
             ErrorSender.send(resp, 404, "No such currency");
         }

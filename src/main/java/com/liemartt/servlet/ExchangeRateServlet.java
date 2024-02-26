@@ -38,7 +38,7 @@ public class ExchangeRateServlet extends HttpServlet {
             ExchangeRate exchangeRate = new ExchangeRateDAOImpl().getExchangeRate(baseCurrencyCode, targetCurrencyCode);
             Renderer.render(resp, exchangeRate);
         } catch (SQLException e) {
-            ErrorSender.send(resp, 500, "");
+            ErrorSender.send(resp, 500, "Server error");
         } catch (NoExchangeRateException e) {
             ErrorSender.send(resp, 404, "No such exchange rate");
         }

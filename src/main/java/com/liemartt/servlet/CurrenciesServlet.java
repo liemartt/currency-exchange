@@ -25,7 +25,7 @@ public class CurrenciesServlet extends HttpServlet {
             List<Currency> currencies = new CurrencyDAOImpl().getAllCurrencies();
             Renderer.render(resp, currencies);
         } catch (SQLException e) {
-            ErrorSender.send(resp, 500, "");
+            ErrorSender.send(resp, 500, "Server error");
         }
     }
 
@@ -44,7 +44,7 @@ public class CurrenciesServlet extends HttpServlet {
             resp.setStatus(201);
             Renderer.render(resp, addedCurrency);
         } catch (SQLException | NoCurrencyException e) {
-            ErrorSender.send(resp, 500, "");
+            ErrorSender.send(resp, 500, "Server error");
         } catch (NonUniqueCurrencyException e) {
             ErrorSender.send(resp, 409, "There is already a currency with this code");
         }
